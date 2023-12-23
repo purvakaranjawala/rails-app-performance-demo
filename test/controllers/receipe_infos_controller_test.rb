@@ -20,7 +20,7 @@ class ReceipeInfosControllerTest < ActionDispatch::IntegrationTest
       post receipe_infos_url,
            params: { receipe_info: { body: @receipe_info.ingredients,
                                      speciality: @receipe_info.speciality,
-                                    #  recipe_id: Recipe.first,
+                                     recipe_id: Recipe.first,
                                      ingredients: @receipe_info.ingredients,
                                      origin: @receipe_info.origin,
                                      posted_at: @receipe_info.posted_at,
@@ -28,8 +28,6 @@ class ReceipeInfosControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_redirected_to receipe_info_url(ReceipeInfo.last)
-    binding.pry
-    assert 
   end
 
   test 'should show receipe_info' do

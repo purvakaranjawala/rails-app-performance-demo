@@ -1,5 +1,4 @@
 class CommentsController < ApplicationController
-
   def new
     @recipe = Recipe.find(params[:recipe_id])
     @comment = @recipe.comments.new(parent_id: params[:parent_id])
@@ -12,8 +11,6 @@ class CommentsController < ApplicationController
       if @comment.save
         format.html { redirect_to @recipe, notice: 'Comment was successfully created.' }
         format.json { render :show, status: :created, location: @comment }
-      else
-        format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
   end

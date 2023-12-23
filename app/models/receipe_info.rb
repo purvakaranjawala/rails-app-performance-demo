@@ -9,6 +9,7 @@ class ReceipeInfo < ApplicationRecord
     attachable.variant :thumb, resize: '100x100'
     attachable.variant :medium, resize: '300x300', monochrome: true
   end
+
   has_many_attached :other_images do |attachable|
     attachable.variant :thumb, resize: '100x100'
     attachable.variant :medium, resize: '300x300', monochrome: true

@@ -20,7 +20,6 @@ class ReceipeInfosController < ApplicationController
   # POST /receipe_infos
   def create
     @receipe_info = ReceipeInfo.new(receipe_info_params)
-    binding.pry
     respond_to do |format|
       if @receipe_info.save
         format.html { redirect_to receipe_info_url(@receipe_info), notice: 'Receipe info was successfully created.' }
