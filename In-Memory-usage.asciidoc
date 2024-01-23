@@ -1,0 +1,24 @@
+In some cases, an in-memory calculation is preferable over querying. Suppose we want to find names that are not present in DB
+
+ names = ["TestUser", "User1", "User2"]
+ na_names = []
+ names.each do |name|
+   unless User.where(name: name).exists?
+     na_names << name
+   end
+ end
+ na_names
+
+======
+ User Exists? (0.6ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", "TestUser"], ["LIMIT", 1]]
+ User Exists? (0.6ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", "User1"], ["LIMIT", 1]]
+ User Exists? (0.5ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" = $1 LIMIT $2  [["name", "User2"], ["LIMIT", 1]]
+=========
+
+The above query required N queries to get the result. Instead of this, we can write a single query to find the users and do the other calculation in memory:
+
+  irb(main):026:0> existing_name = User.pluck(:name)
+        User Pluck (0.7ms)  SELECT "users"."name" FROM "users"
+    => ["Test", "User2", "User3"]
+  irb(main):027:0> na_names = names - existing_name
+    => ["TestUser", "User1"]

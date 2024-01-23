@@ -1,0 +1,20 @@
+Sometimes, we only needs to find if a record exists in our system or not
+Use exists? instead of present? at that time.
+
+# If we care to know a record exists, but actually don't need to do anything with the record...
+
+    `User.where(name: "Test").present?`
+        `User Load (1.2ms)  SELECT "users".* FROM "users" WHERE "users"."name" =   [["name", "Test"]]`
+        `=> true`
+# then using `present?` is wasteful, as it selects all the column
+# and loads the object into memory.
+# SELECT "users".* FROM "users" WHERE "users"."name" =   [["name", "Test"]];
+
+# Instead, use `exists?`
+
+    `User.where(name: "Test").exists?`
+    `User Exists? (0.8ms)  SELECT 1 AS one FROM "users" WHERE "users"."name" =  LIMIT   [["name", "Test"], ["LIMIT", 1]]`
+    `=> true `    
+# The advantage is the corresponding query limits only to 1 record 
+# and does not select any columns.
+# SELECT 1 AS one FROM "users" WHERE "users"."name" =  LIMIT   [["name", "Test"], ["LIMIT", 1]]
